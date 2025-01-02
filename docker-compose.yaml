@@ -1,0 +1,42 @@
+services:
+  pdatabase:
+    image: postgres:latest
+    container_name: postgresdb3
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - pdatabase  # Ensures pgAdmin starts after PostgreSQL
+    networks:
+      - pgnetwork
+
+networks:
+  pgnetwork:
+    driver: bridge
+
+volumes:
+  postgres_data:
+
+# docker run -d \
+#   --name my_postgres5 \
+#   -e POSTGRES_USER=postgres \
+#   -e POSTGRES_PASSWORD=mysecretpassword \
+#   -e POSTGRES_DB=mydb \
+#   -v $(pwd)/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql \
+#   -p 5435:5432 \
+#   postgres

@@ -9,6 +9,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "pg": "^8.5.1"
-    }
+    "consistent-hash": "^1.2.2",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  }
 }
